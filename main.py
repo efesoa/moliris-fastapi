@@ -1,6 +1,7 @@
 from io import BytesIO
 
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from starlette.responses import HTMLResponse
 
@@ -13,6 +14,20 @@ app = FastAPI(
     description="""
     Moliris APIs
     """
+)
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 
