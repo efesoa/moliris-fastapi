@@ -5,6 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from starlette.responses import HTMLResponse
 
+from schema import schemas
+from schema.schemas import Flower
+
 import k_nearest_neighbor
 import similarity_metric
 import numpy as np
@@ -72,17 +75,15 @@ async def upload_dataset(file: UploadFile = File(...)):
 
 
 @app.post("/measurements")
-async def input_data(sepal_length: float, sepal_width: float, petal_length: float,
-                     petal_width: float, sec_sepal_length: float, sec_sepal_width: float,
-                     sec_petal_length: float, sec_petal_width: float):
-    sl1: float = sepal_length
-    sw1: float = sepal_width
-    pl1: float = petal_length
-    pw1: float = petal_width
-    sl2: float = sec_sepal_length
-    sw2: float = sec_sepal_width
-    pl2: float = sec_petal_length
-    pw2: float = sec_petal_width
+async def input_data(flower: schemas.Flower):
+    sl1: float = flower.sepal_length
+    sw1: float = flower.sepal_width
+    pl1: float = flower.petal_length
+    pw1: float = flower.petal_width
+    sl2: float = flower.sec_sepal_length
+    sw2: float = flower.sec_sepal_width
+    pl2: float = flower.sec_petal_length
+    pw2: float = flower.sec_petal_width
     obj = ([sl1, sw1, pl1, pw1], [sl2, sw2, pl2, pw2])
     obj1 = obj[0]
     obj1_d = pd.DataFrame(obj1)
@@ -97,13 +98,12 @@ async def input_data(sepal_length: float, sepal_width: float, petal_length: floa
 
 
 @app.post("/similar_objects")
-async def input_data(sepal_length: float, sepal_width: float, petal_length: float,
-                     petal_width: float, k: int):
-    sl1: float = sepal_length
-    sw1: float = sepal_width
-    pl1: float = petal_length
-    pw1: float = petal_width
-    number_of_neighbors: int = k
+async def input_data(kiris: schemas.KIris):
+    sl1: float = kiris.sepal_length
+    sw1: float = kiris.sepal_width
+    pl1: float = kiris.petal_length
+    pw1: float = kiris.petal_width
+    number_of_neighbors: int = kiris.k
     obj = [sl1, sw1, pl1, pw1]
     obj1_d = pd.DataFrame(obj)
     predicting_object_knn, nn = k_nearest_neighbor.knn(dataset(), obj1_d, number_of_neighbors)
