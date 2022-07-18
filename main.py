@@ -94,7 +94,7 @@ async def input_data(flower: schemas.Flower):
     cal_manhattan = similarity_metric.manhattan(obj[0], obj[1])
     cal_euclidean = similarity_metric.euclidean_distance(obj[0], obj[1], 4)
     cal_cosine = similarity_metric.cosine_similarity(obj[0], obj[1])
-    return obj, predicting_object1, predicting_object2, cal_cosine, cal_euclidean, cal_manhattan
+    return predicting_object1, predicting_object2, cal_cosine, cal_euclidean, cal_manhattan
 
 
 @app.post("/similar_objects")
