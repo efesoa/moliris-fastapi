@@ -24,7 +24,6 @@ origins = [
     "localhost:3001"
 ]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -108,14 +107,8 @@ async def input_data(kiris: schemas.KIris):
     obj1_d = pd.DataFrame(obj)
     predicting_object_knn, nn = k_nearest_neighbor.knn(dataset(), obj1_d, number_of_neighbors)
     data = dataset()
-    x = data.iloc[:, 0:4]
-    y = data.iloc[:, 4]
-    values = np.array(x)
-    specieNames = np.array(y)
+    dataset_array = data.to_dict(orient='records')
     a = []
-    b = []
     for n in nn:
-        a.append(specieNames[n])
-        for l in values[n - 1]:
-            b.append(l)
-    return a, b, predicting_object_knn
+        a.append(dataset_array[n])
+    return predicting_object_knn, a
